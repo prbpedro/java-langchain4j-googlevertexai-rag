@@ -1,0 +1,4 @@
+Pedro é esposo da Barbara.
+Barbara é esposa do Pedro.
+Dona Du é mãe da Barbara.
+Maristela é mãe do Pedro.

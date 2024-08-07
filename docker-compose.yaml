@@ -1,0 +1,45 @@
+services:
+  qdrant:
+    image: mirror.gcr.io/qdrant/qdrant
+    container_name: qdrant
+    ports:
+      - 6333:6333
+      - 6334:6334
+
+  postgres:
+    image: mirror.gcr.io/postgres:16.3-bullseye
+    container_name: postgres
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d postgres -U postgres" ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: mirror.gcr.io/dpage/pgadmin4:8.10
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    ports:
+      - 5050:80
+    restart: unless-stopped
+    volumes:
+      - ./pgadmin/servers.json:/pgadmin4/servers.json
+      - ./pgadmin/pgpass:/pgadmin4/pgpass
+    entrypoint: >
+      /bin/sh -c "cp -f /pgadmin4/pgpass /var/lib/pgadmin/; chmod 600 /var/lib/pgadmin/pgpass; chown pgadmin /var/lib/pgadmin/pgpass; /entrypoint.sh"
+    depends_on:
+      - postgres
