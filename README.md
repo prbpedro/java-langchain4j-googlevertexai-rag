@@ -2,6 +2,8 @@
 
 Este repositório tem como objetivo demonstrar a utilização do [langchain4j](https://docs.langchain4j.dev/) para a construção de aplicações de chat com uso de LLMs (Large Language Models) comerciais em conjunto com a técnica RAG (Retrieval Augmented Generation).
 
+Ele contém a implementação da aplicação descrita no post do meu blog (link https://prbpedro.substack.com/p/geracao-de-texto-com-rags-e-bases).
+
 ## Tecnologias utilizadas
 
 Foram utilizadas as seguintes tecnologias:
@@ -11,7 +13,7 @@ Foram utilizadas as seguintes tecnologias:
  - [langchain4j](https://docs.langchain4j.dev/) 0.33.0
  - [Postgres](https://www.postgresql.org/) 16.3
  - [Qdrant](https://qdrant.tech/) Vector Database
- - [Google Vertex AI](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/overview?hl=pt-br) - Modelos [text-multilingual-embedding-002](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/text-embeddings-api?hl=pt-br) e [gemini-1.5-flash-001](https://cloud.google.com/vertex-ai/generative-ai/docs/quotas?hl=pt-br)
+ - [Google Vertex AI](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/overview?hl=pt-br) - Modelos [text-multilingual-embedding-002](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/text-embeddings-api?hl=pt-br) e [gemini-1.5-flash-001](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/gemini?hl=pt-br)
  - [Docker](https://docs.docker.com/) e [docker compose](https://docs.docker.com/compose/)
 
 ## Representação visual da aplicação
@@ -56,7 +58,7 @@ Caso seja optado por continuar um chat existente o framework [langchain4j](https
 
 Após informar a mensagem o framework [langchain4j](https://docs.langchain4j.dev/) irá converter a mensagem em um vetor através do modelo [text-multilingual-embedding-002](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/text-embeddings-api?hl=pt-br) e buscar na base de dados de vetores [Qdrant](https://qdrant.tech/) os vetores similares.
 
-Caso sejam encontradas similaridades o framework [langchain4j](https://docs.langchain4j.dev/) irá alterar o prompt feito para incluir o texto original referente aos vetores similares, caso contrário o mesmo não irá alterar o prompt, e enviar o prompt para o LLM [gemini-1.5-flash-001](https://cloud.google.com/vertex-ai/generative-ai/docs/quotas?hl=pt-br)
+Caso sejam encontradas similaridades o framework [langchain4j](https://docs.langchain4j.dev/) irá alterar o prompt feito para incluir o texto original referente aos vetores similares, caso contrário o mesmo não irá alterar o prompt, e enviar o prompt para o LLM [gemini-1.5-flash-001](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/gemini?hl=pt-br)
 
 Com a resposta do LLM a aplicação exibe então a mensagem enviada e a resposta da mesma.
 
@@ -66,6 +68,43 @@ Após isto é solicitada novamente a entrada de uma nova mensagem (prompt) do us
 
 ### Configurações necessárias para a execução da aplicação
 
+Para a execução da aplicação é necessário que um projeto do [Google Cloud Platform](https://cloud.google.com/?hl=pt_br) esteja preparado para receber chamadas para a API do Vertex AI.
 
+Para ativar as APIs siga os seguintes passos dispostos no link https://cloud.google.com/vertex-ai/docs/start/cloud-environment?hl=pt-br#enable_vertexai_apis .
 
-http://localhost:5050/browser/
+Após a ativação crie uma conta de serviço seguindo os passos dispostos no link https://cloud.google.com/iam/docs/service-accounts-create?hl=pt-br#iam-service-accounts-create-console .
+
+Após isto faça download do arquivo de credenciais seguindo os passos dispostos no link https://developers.google.com/workspace/guides/create-credentials?hl=pt-br#create_credentials_for_a_service_account .
+
+Agora será necessário confugirar as seguintes variáveis de ambiente: 
+ - GOOGLE_VERTEX_AI_PROJECT_ID: Id do projeto do [Google Cloud Platform](https://cloud.google.com/?hl=pt_br)
+ - GOOGLE_VERTEX_AI_LOCATION: Região do Vertex AI a ser utilizada (normalmente us-central1)
+ - GOOGLE_APPLICATION_CREDENTIALS: Caminho para o arquivo de credenciais baixado
+
+## Passos para a execução
+
+Faça o clone deste projeto e abra um terminal na pasta raiz do repositório clonado.
+
+Execute o seguinte comando para iniciar os recursos através do [docker compose](https://docs.docker.com/compose/):
+```bash
+docker compose up -d
+```
+
+Execute o seguinte comando para iniciar a aplicação:
+```bash
+./gradlew run
+```
+
+## Referências
+
+- https://docs.docker.com
+- https://docs.docker.com/compose/
+- https://cloud.google.com/?hl=pt_br
+- https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/gemini?hl=pt-br
+- https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/text-embeddings-api?hl=pt-br
+- https://docs.langchain4j.dev/
+- https://qdrant.tech/
+- https://cloud.google.com/vertex-ai/generative-ai/docs/learn/overview?hl=pt-br
+- https://www.postgresql.org/
+- https://www.java.com/pt-BR/
+- https://gradle.org/
