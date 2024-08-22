@@ -29,10 +29,10 @@ public class App {
     public static void main(String[] args)
             throws InterruptedException, ExecutionException, URISyntaxException, IOException, SQLException {
 
-        PersistentChatMemoryStore store = new PersistentChatMemoryStore();
-
-        Assistant assistant = createAssistant(store);
-        Utils.startConversationWith(store, assistant);
+        try (PersistentChatMemoryStore store = new PersistentChatMemoryStore()) {
+            Assistant assistant = createAssistant(store);
+            Utils.startConversationWith(store, assistant);
+        }
     }
 
     private static Assistant createAssistant(PersistentChatMemoryStore store)

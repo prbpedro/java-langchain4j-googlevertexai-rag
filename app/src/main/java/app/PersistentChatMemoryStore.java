@@ -16,7 +16,7 @@ import dev.langchain4j.data.message.ChatMessageDeserializer;
 import dev.langchain4j.data.message.ChatMessageSerializer;
 import dev.langchain4j.store.memory.chat.ChatMemoryStore;
 
-public class PersistentChatMemoryStore implements ChatMemoryStore {
+public class PersistentChatMemoryStore implements ChatMemoryStore, AutoCloseable {
 
     private static final String SELECT = "SELECT chat_messages FROM chats WHERE id = ?";
     private static final String SELECT_IDS = "SELECT id FROM chats";
@@ -96,5 +96,10 @@ public class PersistentChatMemoryStore implements ChatMemoryStore {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void close() throws SQLException {
+        conn.close();
     }
 }
