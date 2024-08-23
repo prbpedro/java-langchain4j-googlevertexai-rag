@@ -76,7 +76,7 @@ Após a ativação crie uma conta de serviço seguindo os passos dispostos no li
 
 Após isto faça download do arquivo de credenciais seguindo os passos dispostos no link https://developers.google.com/workspace/guides/create-credentials?hl=pt-br#create_credentials_for_a_service_account .
 
-Agora será necessário confugirar as seguintes variáveis de ambiente: 
+Agora será necessário configurar as seguintes variáveis de ambiente: 
  - GOOGLE_VERTEX_AI_PROJECT_ID: Id do projeto do [Google Cloud Platform](https://cloud.google.com/?hl=pt_br)
  - GOOGLE_VERTEX_AI_LOCATION: Região do Vertex AI a ser utilizada (normalmente us-central1)
  - GOOGLE_APPLICATION_CREDENTIALS: Caminho para o arquivo de credenciais baixado
