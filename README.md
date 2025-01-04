@@ -102,6 +102,7 @@ Execute o seguinte comando para iniciar a aplicação:
 - https://cloud.google.com/?hl=pt_br
 - https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/gemini?hl=pt-br
 - https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/text-embeddings-api?hl=pt-br
+- 
 - https://docs.langchain4j.dev/
 - https://qdrant.tech/
 - https://cloud.google.com/vertex-ai/generative-ai/docs/learn/overview?hl=pt-br
